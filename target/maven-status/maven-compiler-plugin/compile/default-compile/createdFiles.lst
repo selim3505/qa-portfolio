@@ -1,0 +1,4 @@
+com\qa\portfolio\driver\DriverFactory.class
+com\qa\portfolio\pages\LoginPage.class
+com\qa\portfolio\utils\ScreenshotUtils.class
+com\qa\portfolio\utils\ConfigReader.class
