@@ -1,5 +1,8 @@
 # Maven build output
 target/
+allure-results/
+surefire-reports/
+*.class
 
 # Logs
 *.log
@@ -9,6 +12,14 @@ target/
 .vscode/
 *.iml
 
+# Node.js / Playwright
+node_modules/
+dist/
+
 # OS files
 .DS_Store
 Thumbs.db
+
+# API testing (Postman collections, environments)
+*.postman_collection.json
+*.postman_environment.json
