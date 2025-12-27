@@ -21,7 +21,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Install Chrome
-        run: sudo apt-get install -y google-chrome-stable
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser || sudo apt-get install -y google-chrome-stable
 
       - name: Run tests
         working-directory: selenium-java
@@ -35,7 +37,7 @@ jobs:
 
       - name: Generate Allure Report
         run: |
-          npm install -g allure-commandline --save-dev
+          npm install -g allure-commandline
           allure generate selenium-java/target/allure-results --clean -o selenium-java/target/allure-report
 
       - name: Upload Allure HTML report
