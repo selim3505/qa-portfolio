@@ -23,8 +23,10 @@ jobs:
       - name: Install Chrome
         run: sudo apt-get install -y google-chrome-stable
 
-      - name: Run Maven tests
+      - name: Run tests
+        working-directory: selenium-java
         run: mvn clean test
+
 
       - name: Upload Allure results
         uses: actions/upload-artifact@v3
