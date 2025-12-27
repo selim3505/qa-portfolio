@@ -60,7 +60,7 @@ public class LoginTest {
         Assert.assertTrue(error.contains("Epic sadface"), "Error message did not match expected!");
     }
 
-    @Test
+    @Test(enabled = false)
     @Story("Forced Failure")
     @Description("This test is intentionally designed to fail for demonstration purposes")
     public void forcedFailureTest() {
@@ -68,4 +68,5 @@ public class LoginTest {
         loginPage.login("standard_user", "secret_sauce");
         Assert.assertTrue(false, "This test is supposed to fail!");
     }
+
 }
