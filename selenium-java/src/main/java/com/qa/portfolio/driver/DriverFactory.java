@@ -36,6 +36,31 @@ public class DriverFactory {
     }
 
     /**
+     * Alias for backward compatibility with existing tests.
+     * Calls initializeDriver() internally.
+     */
+    public static WebDriver initDriver() {
+        return initializeDriver();
+    }
+
+    /**
+     * Get the current WebDriver instance.
+     */
+    public static WebDriver getDriver() {
+        return driver;
+    }
+
+    /**
+     * Quit the WebDriver and clean up resources.
+     */
+    public static void quitDriver() {
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
+    }
+
+    /**
      * Wait until the given element is visible on the page.
      * This replaces Thread.sleep and makes tests more reliable.
      *
