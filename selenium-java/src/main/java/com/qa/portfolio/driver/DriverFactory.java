@@ -1,34 +1,50 @@
 package com.qa.portfolio.driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.time.Duration;
 
 /**
- * Thread-safe WebDriver manager.
- * Ensures driver is accessible from listeners.
+ * DriverFactory is responsible for creating and managing the WebDriver
+ * instance.
+ * It configures Chrome to run in headless mode for CI environments and provides
+ * utility methods to stabilize tests (e.g., waiting for elements).
  */
 public class DriverFactory {
+    private static WebDriver driver;
 
-    private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    /**
+     * Initialize the ChromeDriver with recommended options for CI stability.
+     * - headless: run without opening a browser window
+     * - no-sandbox / disable-dev-shm-usage: prevent resource issues in CI
+     */
+    public static WebDriver initializeDriver() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless=new"); // CI-friendly headless mode
 
-    /** Starts the browser */
-    public static void initDriver() {
-        WebDriverManager.chromedriver().setup();
-        driver.set(new ChromeDriver());
-        driver.get().manage().window().maximize();
+        driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
+        return driver;
     }
 
-    /** Returns the active driver */
-    public static WebDriver getDriver() {
-        return driver.get();
-    }
-
-    /** Closes the browser safely */
-    public static void quitDriver() {
-        if (driver.get() != null) {
-            driver.get().quit();
-            driver.remove();
-        }
+    /**
+     * Wait until the given element is visible on the page.
+     * This replaces Thread.sleep and makes tests more reliable.
+     *
+     * @param locator        The By locator of the element
+     * @param timeoutSeconds Maximum wait time in seconds
+     * @return WebElement once it becomes visible
+     */
+    public static WebElement waitForElement(By locator, int timeoutSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 }
